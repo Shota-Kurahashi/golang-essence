@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"basic-grammar/foo"
+	"fmt"
+)
 
 func main() {
 	fmt.Println("こんにちは、世界！")
@@ -98,4 +101,53 @@ func main() {
 	)
 
 	fmt.Printf("iota type (連番): %v, %v, %v\n", Dog, Cat, Monkey)
+
+	foo.UpdateUser()
+	name, err := foo.FindUser("foo")
+
+	if err != nil {
+		fmt.Printf("error: %v\n", err)
+	} else {
+		fmt.Printf("name: %v\n", name)
+	}
+
+	forLoop()
+}
+
+func forLoop() {
+	for i := 0; i < 10; i++ {
+		fmt.Printf("i: %v\n", i)
+	}
+
+	i := 0
+
+	for i < 10 {
+		fmt.Printf("i: %v\n", i)
+		i++
+	}
+
+	for {
+		fmt.Printf("i: %v\n", i)
+		i++
+
+		if i == 15 {
+			break
+		}
+	}
+
+	obj := []string{"foo", "bar", "baz"}
+
+	for k, v := range obj {
+		fmt.Printf("k: %v, v: %v\n", k, v)
+	}
+
+finished:
+	for i := 0; i < 10; i++ {
+		for j := 0; j < 10; j++ {
+			if j == 5 {
+				break finished
+			}
+		}
+	}
+
 }
