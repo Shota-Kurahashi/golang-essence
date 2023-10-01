@@ -3,9 +3,19 @@ package main
 import (
 	"basic-grammar/foo"
 	"fmt"
+	"sort"
 )
 
 func main() {
+
+	typeF()
+	forLoop()
+	arraySlice()
+	stringF()
+	mapF()
+}
+
+func typeF() {
 	fmt.Println("こんにちは、世界！")
 
 	var any interface{} = "これは任意の型を持てる"
@@ -110,10 +120,6 @@ func main() {
 	} else {
 		fmt.Printf("name: %v\n", name)
 	}
-
-	forLoop()
-	arraySlice()
-
 }
 
 func forLoop() {
@@ -233,5 +239,78 @@ func arraySlice() {
 	base3 = base3[:n2+copy(base3[n2:], base3[n2+1:])]
 
 	fmt.Printf("base: %v\n", base3)
+}
 
+func stringF() {
+	s := "Hello"
+	s += "World"
+
+	fmt.Printf("s: %v\n", s)
+
+	// 添字でアクセスできる
+	fmt.Printf("s[0]: %c\n", s[0])
+
+	// 書き換える場合は、一度[]byteに変換する
+	b := []byte(s)
+
+	b[0] = 'h'
+
+	s = string(b)
+
+	fmt.Printf("s: %v\n", s)
+
+	var content = `Hello
+	World
+	!
+	`
+
+	fmt.Printf("content: %v\n", content)
+}
+
+func mapF() {
+	// tsのobjectと同じ
+	var m map[string]int
+
+	fmt.Printf("m: %v\n", m)
+
+	m2 := make(map[string]int)
+
+	m2["John"] = 1
+	m2["Paul"] = 2
+	m2["George"] = 3
+
+	fmt.Printf("m2: %v\n", m2)
+
+	// 順番は保証されない
+	for k, v := range m2 {
+		fmt.Printf("k: %v, v: %v \n", k, v)
+	}
+
+	keys := []string{}
+
+	for k := range m2 {
+		keys = append(keys, k)
+	}
+
+	sort.Strings(keys)
+
+	for _, k := range keys {
+		fmt.Printf("k: %v, v: %v \n", k, m2[k])
+	}
+
+	// 消去
+	delete(m2, "John")
+
+	m3 := m2
+
+	delete(m2, "Paul")
+
+	// m3も消える。つまり、参照渡し
+	fmt.Printf("m2: %v\n", m2)
+	fmt.Printf("m3: %v\n", m3)
+
+	// キーの存在確認
+	_, ok := m2["Paul"]
+
+	fmt.Printf("ok: %v\n", ok)
 }
