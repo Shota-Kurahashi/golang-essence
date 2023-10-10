@@ -3,6 +3,7 @@ package main
 import (
 	"basic-grammar/foo"
 	"fmt"
+	"reflect"
 	"sort"
 )
 
@@ -13,6 +14,9 @@ func main() {
 	arraySlice()
 	stringF()
 	mapF()
+	structF()
+	pointF()
+	anyF()
 }
 
 func typeF() {
@@ -313,4 +317,123 @@ func mapF() {
 	_, ok := m2["Paul"]
 
 	fmt.Printf("ok: %v\n", ok)
+}
+
+type User struct {
+	Name string
+	// 小文字は外部からアクセスできない
+	age int
+}
+
+func (u User) AddAge(n User) User {
+	return User{
+		Name: u.Name,
+		age:  u.age + n.age,
+	}
+}
+
+func showName(user *User) {
+	fmt.Printf("user.Name: %v\n", user.age)
+	user.Name = "bar"
+}
+
+func structF() {
+
+	var user User
+
+	user.Name = "foo"
+	user.age = 10
+
+	// 関数の引数に渡すときは、コピーが作成されるので、参照渡しにならない
+	// つまり、関数内で値を変更しても、呼び出し元の値は変更されない
+	// 更新したい場合は、ポインタを渡す
+
+	showName(&user)
+
+	fmt.Printf("user.Name: %v\n", user.Name)
+
+	user2 := User{
+		Name: "foo",
+		age:  10,
+	}
+
+	user2 = user2.AddAge(user2)
+
+	fmt.Printf("user2: %v\n", user2.age)
+}
+
+func (u *User) Add(v int) {
+	u.age += v
+}
+
+func pointF() {
+	v := 1
+	p := &v
+	*p = 2
+	fmt.Printf("v: %v\n", v)
+
+	user := new(User)
+	fmt.Printf("user: %v\n", user)
+	user.Name = "foo"
+	user.age = 10
+	fmt.Printf("user: %v\n", user)
+
+	user.Add(10)
+	fmt.Printf("user: %v\n", user.age)
+
+}
+
+func anyF() {
+	var v interface{}
+
+	v = 1
+	// 型アサーション
+	n := v.(int)
+
+	v = "foo"
+	fmt.Printf("n: %v\n", n)
+	s := v.(string)
+
+	fmt.Printf("s: %v\n", s)
+
+	s, ok := v.(string)
+
+	if !ok {
+		panic("v is not string")
+	}
+
+	fmt.Printf("s: %v\n", s)
+
+	if c, ok := v.(string); !ok {
+		fmt.Printf("v is not string\n")
+	} else {
+		fmt.Printf("v is string: %v\n", c)
+	}
+
+	PrintDetails(1)
+
+}
+
+func PrintDetails(v interface{}) {
+	switch v := v.(type) {
+	case int:
+		fmt.Printf("args is int: %v\n", v)
+	case string:
+		fmt.Printf("args is string: %v\n", v)
+	default:
+		fmt.Printf("args is unknown type\n")
+	}
+}
+
+func PrintSelfDetails(v interface{}) {
+	rt := reflect.TypeOf(v)
+	switch rt.Kind() {
+	case reflect.Int:
+		fmt.Printf("args is int: %v\n", v)
+	case reflect.String:
+		fmt.Printf("args is string: %v\n", v)
+	default:
+		fmt.Printf("args is unknown type\n")
+	}
+
 }
