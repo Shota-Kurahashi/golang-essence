@@ -1,1 +1,3 @@
 package subpkg
+
+// サブパッケージのファイル
