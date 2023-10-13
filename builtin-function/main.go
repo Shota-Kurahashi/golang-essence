@@ -1,9 +1,11 @@
 package main
 
 import (
+	"builtin-function/contexts"
 	"builtin-function/formats"
 	"builtin-function/jsons"
 	"builtin-function/logs"
+	ospackages "builtin-function/os-packages"
 	"builtin-function/paths"
 	"builtin-function/times"
 	"fmt"
@@ -42,5 +44,7 @@ func main() {
 	// nets.Main()
 	times.Main()
 	paths.Main()
+	ospackages.Main()
+	contexts.Main()
 
 }
