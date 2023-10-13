@@ -1,0 +1,8 @@
+{
+  "species": "penguin",
+  "description": "Emperor Penguin",
+  "dimension": {
+    "width": 50,
+    "height": 100
+  }
+}
