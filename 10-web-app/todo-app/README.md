@@ -1,1 +1,1 @@
-Github [https://github.com/mattn/todo-notify]
+[GitHub](https://github.com/mattn/todo-notify)
